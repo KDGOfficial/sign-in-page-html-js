@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">LOGO</div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Blog</a>
+            <a href="#">Contacts</a>
+            <a href="#" class="header-btn">Sign In</a>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="login-box" id="loginBox">
+            <div class="login-header">
+                <h2>Sign In</h2>
+                <span class="close-icon">&times;</span>
+            </div>
+
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">User</label>
+                    <input type="text" id="username" placeholder="Username">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••">
+                </div>
+
+                <button type="submit" class="submit-btn">Get Started</button>
+                
+                <button type="button" class="help-btn" id="hintBtn">Узнать логин и пароль</button>
+            </form>
+
+            <div id="msgBox" class="message"></div>
+        </div>
+
+        <div class="welcome-screen" id="welcomeScreen">
+            <h1>Добро пожаловать, Admin!</h1>
+            <p>Вы успешно вошли в систему.</p>
+            <br>
+            <button onclick="location.reload()" style="padding: 10px 20px; cursor:pointer;">Выйти</button>
+        </div>
+
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const msgBox = document.getElementById('msgBox');
+        const loginBox = document.getElementById('loginBox');
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const hintBtn = document.getElementById('hintBtn');
+
+        // Логика проверки студента
+        hintBtn.addEventListener('click', function() {
+            // Задаем вопрос
+            const answer = prompt(
+                "Секретный вопрос:\nВ какой группе находится студент, который сделал эту работу?\n\n(Подсказка: вводить по-русски и с пробелом)"
+            );
+
+            // Проверяем ответ (удаляем лишние пробелы по краям, если пользователь их случайно поставил)
+            if (answer && answer.trim() === "КНД 231") {
+                alert("Правильно!\nЛогин: admin\nПароль: admin");
+                
+                // Можно сразу подставить в поля для удобства (по желанию)
+                usernameInput.value = "admin";
+                passwordInput.value = "admin";
+            } else {
+                if(answer !== null) { // Если нажали Отмена, ничего не пишем
+                    alert("Ответ неверный. Доступ запрещен.");
+                }
+            }
+        });
+
+        // Логика входа
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const user = usernameInput.value;
+            const pass = passwordInput.value;
+
+            msgBox.style.display = 'block';
+            msgBox.className = 'message'; 
+
+            if (user === 'admin' && pass === 'admin') {
+                msgBox.textContent = 'Успешный вход! Перенаправление...';
+                msgBox.classList.add('success');
+                
+                setTimeout(() => {
+                    loginBox.style.display = 'none';
+                    welcomeScreen.style.display = 'block';
+                }, 1000);
+
+            } else {
+                msgBox.textContent = 'Ошибка: Неверный логин или пароль';
+                msgBox.classList.add('error');
+            }
+        });
+    </script>
+
+</body>
+</html>
